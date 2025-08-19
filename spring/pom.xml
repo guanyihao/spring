@@ -107,6 +107,18 @@
             <version>13.0</version>
             <scope>compile</scope>
         </dependency>
+        <!-- JSON API 规范 -->
+        <dependency>
+            <groupId>javax.json</groupId>
+            <artifactId>javax.json-api</artifactId>
+            <version>1.1.4</version>
+        </dependency>
+        <!-- JSON API 实现（GlassFish提供） -->
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.1.4</version>
+        </dependency>
     </dependencies>
 
     <build>
