@@ -22,7 +22,7 @@ import java.util.Base64;
 
 public class Camera {
     // 后端接口地址
-    private static final String BACKEND_URL = "";
+    private static final String BACKEND_URL = "http://localhost:8080/api/receive";
 
     // 摄像头URL
     private static final String CAMERA_URL = "";
