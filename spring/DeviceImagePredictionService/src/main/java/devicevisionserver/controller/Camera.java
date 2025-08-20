@@ -34,51 +34,6 @@ public class Camera {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
-    public static void main(String[] args) {
-        camera = new VideoCapture();
-        try {
-            camera.open(CAMERA_URL);
-            if (!camera.isOpened()) {
-                logger.error("无法连接网络摄像头，请检查配置");
-                return;
-            }
-            logger.info("网络摄像头连接成功，开始捕获图像...");
-            logger.info("摄像头URL（部分隐藏）：{}", hideSensitiveInfo(CAMERA_URL));
-
-            Mat frame = new Mat();
-            while (true) {
-                boolean success = camera.read(frame);
-                if (!success || frame.empty()) {
-                    logger.warn("未捕获到图像帧，1秒后重试...");
-                    Thread.sleep(1000);
-                    continue;
-                }
-
-                byte[] rawImageData = matToByteArray(frame);
-                if (rawImageData == null) {
-                    logger.warn("无法提取图像数据，跳过当前帧");
-                    continue;
-                }
-
-                String base64Image = ImageUtil.convertToBase64(rawImageData);
-                if (base64Image != null) {
-                    String deviceId = "net_cam_" + CAMERA_URL.hashCode();
-                    sendToBackend(base64Image, deviceId);
-                }
-
-                Thread.sleep(captureInterval);
-            }
-
-        } catch (Exception e) {
-            logger.error("设备处理异常", e);
-        } finally {
-            if (camera != null && camera.isOpened()) {
-                camera.release();
-                logger.info("网络摄像头连接已关闭");
-            }
-        }
-    }
-
     private static String hideSensitiveInfo(String url) {
         if (url.contains("@")) {
             return url.replaceAll("://.*@", "://[隐藏账号密码]@");
